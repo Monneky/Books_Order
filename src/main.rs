@@ -1,38 +1,46 @@
-fn sorted_strings(items: &[String]) -> Vec<String> {
-    let mut v = items.to_vec();
-    v.sort();
+#[derive(Debug, Clone)]
+struct Libro {
+    titulo: String,
+    autor: String,
+    genero: String
+}
+
+fn ordenar_libros(libros: &[Libro]) -> Vec<Libro> {
+    let mut v = libros.to_vec();
+    v.sort_by(|a, b| { 
+        let g = a.genero.cmp(&b.genero);
+        if g == std::cmp::Ordering::Equal {
+            let au = a.autor.cmp(&b.autor);
+            if au == std::cmp::Ordering::Equal{
+                a.titulo.cmp(&b.titulo)
+            }else{
+                au
+            }
+        }else {
+            g
+        }
+    });
     v
 }
 
 fn main() {
     let libros = vec![
-        String::from("El poder medicinal de las plantas"),
-        String::from("Un corazón tranquilo"),
+        Libro {
+            titulo: "El poder medicinal de las plantas".to_string(),
+            autor: "Reinaldo Sosa Gómez".to_string(),
+            genero: "Salud".to_string()
+        },
+        Libro {
+            titulo: "Un corazón tranquilo".to_string(),
+            autor: "Dr. Carlos Fayard".to_string(),
+            genero: "Autoayuda".to_string()
+        },
     ];
 
-    let ordenados = sorted_strings(&libros);
+    let ordenados = ordenar_libros(&libros);
 
     println!("🔹 Ordenados:");
     for t in &ordenados {
-        println!("- {t}");
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn ordena_copia_sin_mutar_origina() {
-        let originales = vec![
-            "b".to_string(),
-            "c".to_string(),
-            "a".to_string(),
-        ];
-
-        let copia = sorted_strings(&originales);
-
-        assert_eq!(originales, vec!["b", "c", "a"]);
-        assert_eq!(copia, vec!["a", "b", "c"]);
+        println!("- {} [{}] ({})", t.titulo, t.autor, t.genero);
     }
 }
