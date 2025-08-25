@@ -12,11 +12,6 @@ fn main() {
 
     let ordenados = sorted_strings(&libros);
 
-    println!("🔹 Original (sin cambios):");
-    for t in &libros {
-        println!("- {t}");
-    }
-
     println!("🔹 Ordenados:");
     for t in &ordenados {
         println!("- {t}");
